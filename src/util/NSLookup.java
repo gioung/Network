@@ -23,7 +23,7 @@ public class NSLookup {
 				bf=new BufferedReader(new InputStreamReader(System.in,"utf-8"));
 				hostname=bf.readLine();
 			
-				if(hostname.equals("exit")) //NSLOOKUP 종료
+				if("exit".equals(hostname)) //NSLOOKUP 종료 , null pointer Exception 방지
 					break;
 			
 				//도메인을 ip 주소로 변환
