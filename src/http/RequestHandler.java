@@ -3,6 +3,7 @@ package http;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -12,22 +13,25 @@ import java.nio.file.Files;
 
 public class RequestHandler extends Thread {
 	private Socket socket;
-	private static String documentRoot="";
+	private static String documentRoot="/root/dowork/network/Network/resources/webapp";
 	private static final String BAD_ROOT = "./webapp/error/400.html, 400 Bad Request\r\n";
 	private static final String NOTFOUND_ROOT = "./webapp/error/404.html, 404 Not found\r\n";
 	
 	static {
-		try {
+		/*try {
 			documentRoot = new File(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation()
 					.toURI()).getPath();
+			
 			documentRoot+="/webapp";
 			
-			//documentRoot=RequestHandler.class.getClass().getResource("/webapp").getPath();
+			//InputStream is = RequestHandler.class.getClass().getResourceAsStream("/webapp/");
+		
+			
 			
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		System.out.println("---->"+documentRoot);
 	}
 	public RequestHandler( Socket socket ) {

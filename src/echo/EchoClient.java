@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class EchoClient {
-	private static final String SERVER_IP="127.0.0.1"; //final 키워드 : 값에 대입의 끝 (변경 불가) 
+	private static final String SERVER_IP="192.168.1.40"; //final 키워드 : 값에 대입의 끝 (변경 불가) 
 	private static final int SERVER_PORT= 8000;
 
 	public static void main(String[] args) {
