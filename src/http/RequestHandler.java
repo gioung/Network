@@ -7,14 +7,26 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 
 public class RequestHandler extends Thread {
 	private Socket socket;
-	private static final String DOCUMENT_ROOT = "./webapp";
+	private static String documentRoot="";
 	private static final String BAD_ROOT = "./webapp/error/400.html, 400 Bad Request\r\n";
 	private static final String NOTFOUND_ROOT = "./webapp/error/404.html, 404 Not found\r\n";
 	
+	static {
+		try {
+			documentRoot = new File(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation()
+					.toURI()).getPath();
+			documentRoot+="/webapp";
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("---->"+documentRoot);
+	}
 	public RequestHandler( Socket socket ) {
 		this.socket = socket;
 	}
@@ -95,6 +107,7 @@ public class RequestHandler extends Thread {
 	}
 
 	public void consoleLog( String message ) {
+	
 		System.out.println( "[RequestHandler#" + getId() + "] " + message );
 	}
 	public void responseStaticResource(OutputStream os,String url,String protocol) throws IOException{
@@ -103,7 +116,7 @@ public class RequestHandler extends Thread {
 			url = "/index.html";
 		}
 		
-		File f = new File(DOCUMENT_ROOT+url);
+		File f = new File(documentRoot+url);
 		if(f.exists()==false) {
 			//404 응답코드
 			responseError(os,protocol,NOTFOUND_ROOT);
@@ -115,9 +128,10 @@ public class RequestHandler extends Thread {
 			String contentType = Files.probeContentType(f.toPath());
 			
 	   //응답
-			os.write( (protocol+" 200 OK\r\n").getBytes( "UTF-8" ) );
-			os.write( ("Content-Type:"+contentType+"; charset=utf-8\r\n").getBytes( "UTF-8" ) );
-			os.write( "\r\n".getBytes() ); //헤더와 바디를 나누는 부분
+			
+			os.write("HTTP/1.1 200 OK\r\n".getBytes("UTF-8"));
+			os.write(("Content-Type:"+contentType+"; charset=utf-8\r\n").getBytes("UTF-8") );
+			os.write("\r\n".getBytes() ); //헤더와 바디를 나누는 부분
 			os.write(body);
 	}
 	
