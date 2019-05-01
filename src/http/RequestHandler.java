@@ -21,6 +21,9 @@ public class RequestHandler extends Thread {
 			documentRoot = new File(RequestHandler.class.getProtectionDomain().getCodeSource().getLocation()
 					.toURI()).getPath();
 			documentRoot+="/webapp";
+			
+			//documentRoot=RequestHandler.class.getClass().getResource("/webapp").getPath();
+			
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
